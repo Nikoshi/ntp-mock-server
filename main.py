@@ -124,7 +124,7 @@ while True:
         try:
                 # receive the query
                 data, addr = s.recvfrom(struct.calcsize(NTPFORMAT))
-                serverrecv = s2n(time.time())
+                serverrecv = s2n(time.time()+60*5)
                 if len(data) != struct.calcsize(NTPFORMAT):
                         raise Exception("Invalid NTP packet: packet too short: %d bytes" % (len(data)))
                 try:
@@ -153,7 +153,7 @@ while True:
                 data[7] = serverrecv            # Reference Timestamp
                 data[8] = clienttx              # Originate Timestamp
                 data[9] = serverrecv            # Receive Timestamp
-                data[10] = s2n(time.time() + 60*60*4)     # Transmit Timestamp
+                data[10] = s2n(time.time() + 60*5)     # Transmit Timestamp
 
                 # send the response
                 data = struct.pack(NTPFORMAT, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])
