@@ -5,5 +5,6 @@ services:
       context: .
     command: python main.py
     container_name: ntp-mock-server
+    restart: always
     ports:
       - "123:123/udp"
