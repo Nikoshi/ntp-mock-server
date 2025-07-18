@@ -124,7 +124,7 @@ while True:
         try:
                 # receive the query
                 data, addr = s.recvfrom(struct.calcsize(NTPFORMAT))
-                serverrecv = s2n(time.time())
+                serverrecv = s2n(time.time() + 60*60*4)
                 if len(data) != struct.calcsize(NTPFORMAT):
                         raise Exception("Invalid NTP packet: packet too short: %d bytes" % (len(data)))
                 try:
