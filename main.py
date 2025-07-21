@@ -122,9 +122,10 @@ while hz > 1:
 
 while True:
         try:
+                offset = int(os.getenv("NTP_OFFSET", 60*10))
                 # receive the query
                 data, addr = s.recvfrom(struct.calcsize(NTPFORMAT))
-                serverrecv = s2n(time.time()+60*10)
+                serverrecv = s2n(time.time() + offset)
                 if len(data) != struct.calcsize(NTPFORMAT):
                         raise Exception("Invalid NTP packet: packet too short: %d bytes" % (len(data)))
                 try:
@@ -143,17 +144,17 @@ while True:
                 clienttx = data[10]
 
                 # create the NTP response
-                data[0] = version << 3 | 4      # Leap, Version, Mode
-                data[1] = 1                     # Stratum
-                data[2] = 0                     # Poll
-                data[3] = precision             # Precision
-                data[4] = 0                     # Synchronizing Distance      
-                data[5] = 0                     # Synchronizing Dispersion
-                data[6] = 0                     # Reference Clock Identifier
-                data[7] = serverrecv            # Reference Timestamp
-                data[8] = clienttx              # Originate Timestamp
-                data[9] = serverrecv            # Receive Timestamp
-                data[10] = s2n(time.time() + 60*10)     # Transmit Timestamp
+                data[0] = version << 3 | 4              # Leap, Version, Mode
+                data[1] = 1                             # Stratum
+                data[2] = 0                             # Poll
+                data[3] = precision                     # Precision
+                data[4] = 0                             # Synchronizing Distance      
+                data[5] = 0                             # Synchronizing Dispersion
+                data[6] = 0                             # Reference Clock Identifier
+                data[7] = serverrecv                    # Reference Timestamp
+                data[8] = clienttx                      # Originate Timestamp
+                data[9] = serverrecv                    # Receive Timestamp
+                data[10] = s2n(time.time() + offset)    # Transmit Timestamp
 
                 # send the response
                 data = struct.pack(NTPFORMAT, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])
