@@ -7,6 +7,6 @@ services:
     container_name: ntp-mock-server
     restart: always
     environment:
-      - NTP_OFFSET: 600
+      - NTP_OFFSET=600
     ports:
       - "123:123/udp"
