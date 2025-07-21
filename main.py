@@ -122,7 +122,8 @@ while hz > 1:
 
 while True:
         try:
-                offset = int(os.getenv("NTP_OFFSET", 60*10))
+                offset = int(os.getenv("NTP_OFFSET", 0))
+                print("offset =", offset)
                 # receive the query
                 data, addr = s.recvfrom(struct.calcsize(NTPFORMAT))
                 serverrecv = s2n(time.time() + offset)
